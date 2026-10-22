@@ -32,7 +32,7 @@ body {
 }
 
 body {
-  font-family: "PingFang SC", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+  font-family: "Plus Jakarta Sans", "Noto Sans SC", "PingFang SC", -apple-system, BlinkMacSystemFont, sans-serif;
   background: var(--page);
   color: var(--text);
   line-height: 1.4;
@@ -525,9 +525,11 @@ button:disabled {
 }
 
 .coin-disc {
+  display: inline-block;
   width: 22px;
   height: 22px;
   flex: none;
+  vertical-align: middle;
   background: url("../img/coin.png") center / contain no-repeat;
 }
 
@@ -953,27 +955,24 @@ button:disabled {
 .mile {
   position: relative;
   display: grid;
-  grid-template-columns: 30px minmax(0, 1fr);
+  grid-template-columns: 24px minmax(0, 1fr) auto;
   column-gap: 10px;
-  padding-bottom: 16px;
-}
-
-.mile:last-child {
-  padding-bottom: 12px;
+  align-items: center;
+  padding: 8px 0 8px 4px;
 }
 
 .mile::before {
   content: "";
   position: absolute;
-  left: 14px;
+  left: 15px;
   top: 28px;
-  bottom: -2px;
+  bottom: -8px;
   width: 2px;
-  background: #e4e4e8;
+  background: #e2e8f0;
 }
 
 .mile.is-done::before {
-  background: #22c55e;
+  background: #10b981;
 }
 
 .mile:last-child::before {
@@ -981,105 +980,98 @@ button:disabled {
 }
 
 .mile-node {
-  width: 30px;
-  height: 30px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
-  border: 1.5px solid #d5d5db;
-  background: #fff;
-  box-sizing: border-box;
+  border: 1px solid #e2e8f0;
+  background: #f1f5f9;
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   z-index: 1;
+  box-shadow: 0 0 0 4px #fff;
 }
 
-.mile.is-done .mile-node,
+.mile.is-done .mile-node {
+  border: 0;
+  background: #10b981;
+  color: #fff;
+  box-shadow: 0 4px 10px rgba(16, 185, 129, 0.22), 0 0 0 4px #fff;
+}
+
 .mile.is-current .mile-node {
-  border-color: #22c55e;
+  border: 1.5px solid #10b981;
 }
 
-.mile-node img {
-  width: 18px;
-  height: 16px;
+.mile-node svg {
+  width: 14px;
+  height: 14px;
+}
+
+.mile-copy b {
   display: block;
-  object-fit: contain;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.3;
 }
 
-.mile.is-done .mile-node img {
-  width: 16px;
-  height: 16px;
-}
-
-.mile-top {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 8px;
-}
-
-.mile-top b {
-  min-width: 0;
-  padding-top: 2px;
-  font-size: 14px;
-  font-weight: 650;
-  line-height: 1.35;
-}
-
-.mile-frac {
-  margin-top: 4px;
-  color: #b0b0b6;
-  font-size: 12px;
+.mile-copy small {
+  display: block;
+  margin-top: 2px;
+  color: #94a3b8;
+  font-size: 11px;
   font-variant-numeric: tabular-nums;
 }
 
-.mile-frac span {
-  color: var(--brand);
-  font-weight: 700;
+.mile-side {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .mile-coin {
-  margin-top: 6px;
   display: flex;
   align-items: center;
-  gap: 4px;
-  color: #e39b12;
-  font-size: 14px;
+  gap: 2px;
+  color: #b45309;
+  font-size: 12px;
   font-weight: 700;
+  white-space: nowrap;
   font-variant-numeric: tabular-nums;
 }
 
 .mile-coin .coin-disc {
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
 }
 
 .mile-go {
   flex: none;
-  box-sizing: border-box;
   height: 28px;
-  min-width: 64px;
   padding: 0 12px;
-  border-radius: 14px;
+  border-radius: 999px;
   color: #fff;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
-  background: var(--brand);
+  background: #22c55e;
 }
 
 .mile-done {
   flex: none;
-  box-sizing: border-box;
   height: 28px;
-  min-width: 64px;
   padding: 0 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--muted);
-  font-size: 13px;
-  font-weight: 700;
-  line-height: 1;
+  border-radius: 999px;
+  background: #f1f5f9;
+  color: #94a3b8;
+  font-size: 12px;
+  font-weight: 650;
 }
 
 .link-row {
@@ -1207,12 +1199,58 @@ button:disabled {
   padding: 14px;
   display: grid;
   grid-template-columns: 84px minmax(0, 1fr) auto;
-  gap: 12px;
+  grid-template-rows: auto auto;
+  column-gap: 12px;
+  row-gap: 2px;
   align-items: center;
   background: var(--card);
   border-radius: 0;
   text-align: left;
   box-shadow: inset 0 -1px 0 var(--line);
+}
+
+.sku > .ticket {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+}
+
+.sku > .sku-copy,
+.sku > .sku-end {
+  display: contents;
+}
+
+.sku .sku-copy strong {
+  grid-column: 2;
+  grid-row: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  line-height: 20px;
+}
+
+.sku .sku-copy small {
+  grid-column: 2;
+  grid-row: 2;
+  margin-top: 0;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  line-height: 16px;
+}
+
+.sku .sku-end em {
+  grid-column: 3;
+  grid-row: 1;
+  justify-self: end;
+}
+
+.sku .sku-state {
+  grid-column: 3;
+  grid-row: 2;
+  justify-self: end;
+  margin-top: 0;
 }
 
 .sku:not(.sku + .sku) {
@@ -1503,10 +1541,10 @@ button:disabled {
 .goal-option {
   width: 100%;
   display: grid;
-  grid-template-columns: 72px minmax(0, 1fr);
+  grid-template-columns: 64px minmax(0, 1fr) 20px;
   gap: 10px;
   align-items: center;
-  padding: 8px;
+  padding: 8px 14px 8px 8px;
   border-radius: 12px;
   background: #fff;
   box-shadow: inset 0 0 0 1px var(--line);
@@ -1514,11 +1552,49 @@ button:disabled {
 }
 
 .goal-option.is-on {
-  box-shadow: inset 0 0 0 1.5px var(--brand);
+  box-shadow: inset 0 0 0 1.5px #22c55e;
+}
+
+.goal-radio {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1.5px solid #cbd5e1;
+  background: #fff;
+  position: relative;
+}
+
+.goal-option.is-on .goal-radio {
+  border-color: #22c55e;
+}
+
+.goal-option.is-on .goal-radio::after {
+  content: "";
+  position: absolute;
+  inset: 3.5px;
+  border-radius: 50%;
+  background: #22c55e;
 }
 
 .goal-option .ticket {
-  height: 48px;
+  width: 64px;
+  height: 40px;
+  border-radius: 12px;
+  padding: 0 4px;
+}
+
+.goal-option .ticket::before,
+.goal-option .ticket::after {
+  display: none;
+}
+
+.goal-option .ticket b,
+.goal-option .ticket small {
+  font-size: 8px;
+  font-weight: 800;
+  line-height: 1.15;
+  white-space: nowrap;
+  letter-spacing: -0.2px;
 }
 
 .result-card {
@@ -1734,6 +1810,32 @@ button:disabled {
   display: none;
 }
 
+.sku-end {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 4px;
+}
+
+.sku-end em {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 0;
+  color: #b45309;
+  font-style: normal;
+  font-size: 14px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.sku-end em .coin-disc {
+  width: 18px;
+  height: 18px;
+}
+
 @media (prefers-reduced-motion: reduce) {
   #ticker-text {
     transition: none;
@@ -1741,4 +1843,772 @@ button:disabled {
   .goal-card.is-goal-swap > * {
     animation: none;
   }
+}
+
+.device:has(.shop) .status-bar,
+.device:has(.shop) .home-bar,
+.stage:has(.shop) {
+  background: #f8f9fa;
+}
+
+.stage:has(.shop)::before {
+  content: "";
+  position: absolute;
+  top: -40px;
+  right: -30px;
+  width: 280px;
+  height: 240px;
+  background: radial-gradient(circle at 70% 30%, rgba(134, 239, 172, 0.45), rgba(187, 247, 208, 0.12) 46%, transparent 72%);
+  pointer-events: none;
+}
+
+.shop-nav {
+  height: 56px;
+  padding: 0 16px;
+  background: rgba(248, 249, 250, 0.82);
+  backdrop-filter: blur(16px);
+}
+
+.shop-nav h1 {
+  font-weight: 700;
+  letter-spacing: -0.2px;
+}
+
+.shop-nav .icon-btn {
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.nav-pill {
+  height: 36px;
+  margin-left: 8px;
+  padding: 0 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.shop {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 8px 16px 28px;
+}
+
+.shop > * {
+  flex: none;
+  width: 100%;
+  margin: 0;
+}
+
+.shop .hero,
+.shop .changes,
+.shop .shelf-card,
+.shop .earn-card,
+.shop .link-row {
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.03);
+  box-shadow: 0 8px 30px -4px rgba(22, 34, 25, 0.05), 0 2px 10px -2px rgba(22, 34, 25, 0.03);
+}
+
+.shop .hero,
+.shop .shelf-card,
+.shop .earn-card {
+  border-radius: 24px;
+  padding: 20px;
+}
+
+.shop .hero {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-glow {
+  position: absolute;
+  right: -32px;
+  top: -32px;
+  width: 176px;
+  height: 176px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(134, 239, 172, 0.45), transparent 68%);
+  pointer-events: none;
+}
+
+.hero-top {
+  position: relative;
+  z-index: 1;
+  display: block;
+}
+
+.hero-top > div:first-child {
+  min-width: 0;
+  padding-right: 142px;
+}
+
+.hero-side {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  max-width: 138px;
+}
+
+.shop .k {
+  color: #94a3b8;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.shop .balance-num {
+  margin-top: 4px;
+  align-items: baseline;
+  flex-wrap: wrap;
+  color: #111315;
+  font-family: "Plus Jakarta Sans", var(--num), sans-serif;
+  font-size: 36px;
+  font-weight: 800;
+  letter-spacing: -0.8px;
+}
+
+.shop .rate-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  color: #94a3b8;
+}
+
+.live-dot,
+.boost-chip i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #34d399;
+  flex: none;
+}
+
+.boost-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  max-width: 100%;
+  padding: 5px 8px;
+  border-radius: 999px;
+  background: rgba(241, 245, 249, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.03);
+  color: #475569;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.boost-chip b {
+  color: #047857;
+  font-weight: 700;
+}
+
+.boost-chip.is-on i {
+  animation: boost-breathe 1.6s ease-in-out infinite;
+}
+
+@keyframes boost-breathe {
+  0%, 100% {
+    opacity: 0.4;
+    box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.15);
+  }
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 0 4px rgba(52, 211, 153, 0.28);
+  }
+}
+
+.hero-coin {
+  width: 48px;
+  height: 46px;
+  background: url("../img/coin.png") center / contain no-repeat;
+}
+
+.shop .reward-nest {
+  position: relative;
+  z-index: 1;
+  margin-top: 12px;
+  padding: 10px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+  border: 1px solid #f1f5f9;
+}
+
+.shop .goal-card,
+.shop .goal-empty {
+  margin-top: 0;
+}
+
+.shop .goal-empty {
+  padding: 16px;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: none;
+  border: 1px solid #e2e8f0;
+}
+
+.shop .goal-empty b {
+  color: #111315;
+}
+
+.reward-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.reward-head > span {
+  color: #94a3b8;
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.shop .goal-change {
+  position: static;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  color: #111315;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.reward-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: #fff;
+  border: 1px solid rgba(241, 245, 249, 0.9);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+.reward-row.is-out {
+  opacity: 0.55;
+}
+
+.shop .next-prize-hit {
+  min-width: 0;
+  padding-right: 0;
+  grid-template-columns: 64px minmax(0, 1fr);
+  gap: 10px;
+}
+
+.shop .reward-row .ticket {
+  width: 64px;
+  height: 40px;
+  border-radius: 12px;
+  box-shadow: 0 0 0 2px rgba(254, 226, 226, 0.8);
+}
+
+.shop .reward-row .ticket::before,
+.shop .reward-row .ticket::after,
+.shop .shelf-list .ticket::before,
+.shop .shelf-list .ticket::after {
+  display: none;
+}
+
+.shop .reward-row .ticket b,
+.shop .reward-row .ticket small {
+  font-size: 8px;
+  font-weight: 800;
+  white-space: nowrap;
+  letter-spacing: -0.2px;
+}
+
+.shop .reward-row .sku-copy strong {
+  font-size: 14px;
+}
+
+.shop .sku-copy em,
+.shop .sku-end em,
+.shop .mile-coin {
+  color: #b45309;
+}
+
+.reward-go,
+.shop .sku-state {
+  flex: none;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: #fff;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  color: #475569;
+  font-size: 12px;
+  font-weight: 650;
+  white-space: nowrap;
+}
+
+.reward-go {
+  color: #047857;
+  background: #ecfdf5;
+  border-color: rgba(167, 243, 208, 0.8);
+}
+
+.shop .pace {
+  margin-top: 8px;
+  padding: 12px;
+  border-top: 0;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+.pace-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.pace-meta span {
+  color: #94a3b8;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.pace-meta b {
+  color: #111315;
+  font-size: 15px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.shop .pace-track {
+  height: 8px;
+  margin-top: 8px;
+  background: #e8eef3;
+}
+
+.shop .pace-track span {
+  background: #22c55e;
+}
+
+.shop .pace-title {
+  margin-top: 10px;
+  color: #111315;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.35;
+  letter-spacing: -0.2px;
+}
+
+.shop .pace-gap {
+  margin-top: 4px;
+  color: #64748b;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.shop .pace-basis {
+  margin-top: 2px;
+  color: #94a3b8;
+  font-size: 13px;
+}
+
+.shop .pace-go {
+  display: block;
+  width: 100%;
+  height: 44px;
+  margin-top: 12px;
+  border-radius: 999px;
+  background: #22c55e;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.shop .next-fallback {
+  margin-top: 10px;
+  color: #047857;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.shop .changes {
+  margin: 0;
+  border-radius: 16px;
+  padding: 16px;
+}
+
+.shop .changes .change-row {
+  padding: 2px 0;
+}
+
+.shop .changes .change-row + .change-row {
+  margin-top: 10px;
+  padding-top: 12px;
+  border-top-color: #f1f5f9;
+}
+
+.shop .changes span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+.shop .changes span::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10b981;
+}
+
+.shop .changes .change-row:has(b.is-muted) span::before {
+  background: #cbd5e1;
+}
+
+.shop .changes b {
+  color: #111315;
+  font-weight: 600;
+}
+
+.shop .changes .change-row:first-child b:not(.is-muted) {
+  color: #16a34a;
+}
+
+.shop .ticker {
+  margin: 0;
+  padding: 8px 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(0, 0, 0, 0.03);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+
+.ticker-bell {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2310b981' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 8a6 6 0 0 1 12 0c0 7 3 7 3 9H3c0-2 3-2 3-9'/%3E%3Cpath d='M10 20a2 2 0 0 0 4 0'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+.shop .head-row {
+  margin: 0 0 14px;
+}
+
+.shop .head-row h2 {
+  font-size: 17px;
+  letter-spacing: -0.2px;
+}
+
+.shop .head-row button,
+.shop .link-row span {
+  color: #94a3b8;
+  font-weight: 650;
+}
+
+.shop .tabs {
+  display: inline-flex;
+  gap: 0;
+  margin: 0 0 14px;
+  padding: 4px;
+  border: 0;
+  border-radius: 999px;
+  background: #f1f5f9;
+}
+
+.shop .tabs button {
+  padding: 6px 16px;
+  border-radius: 999px;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.shop .tabs button[aria-selected="true"] {
+  background: #111315;
+  color: #fff;
+}
+
+.shop .tabs button[aria-selected="true"]::after {
+  display: none;
+}
+
+.shop .shelf-list .sku {
+  margin-bottom: 10px;
+  padding: 12px 14px;
+  grid-template-columns: 50px minmax(0, 1fr) auto;
+  column-gap: 8px;
+  border-radius: 16px;
+  background: #f8fafc;
+  border: 1px solid #f1f5f9;
+  box-shadow: none;
+  min-height: 68px;
+}
+
+.shop .shelf-list .sku:last-child {
+  margin-bottom: 0;
+}
+
+.shop .shelf-list .ticket {
+  width: 50px;
+  height: 36px;
+  border-radius: 12px;
+  padding: 0 2px;
+}
+
+.shop .shelf-list .sku .sku-state {
+  padding: 3px 8px;
+  font-size: 11px;
+}
+
+.shop .shelf-list .ticket b {
+  font-size: 8px;
+  font-weight: 800;
+  text-align: center;
+  white-space: nowrap;
+  letter-spacing: -0.3px;
+}
+
+.shop .sku-copy small {
+  color: #94a3b8;
+  font-size: 11px;
+}
+
+@property --boost-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.shop .boost-card {
+  margin: 0;
+  padding: 20px;
+  border-radius: 24px;
+  color: #0f172a;
+  border: 1.5px solid transparent;
+  background:
+    linear-gradient(135deg, #f0fdf4, #ecfdf5) padding-box,
+    linear-gradient(#d1fae5, #d1fae5) border-box;
+  position: relative;
+  overflow: hidden;
+}
+
+.shop .boost-card.is-on {
+  background:
+    linear-gradient(135deg, #f0fdf4, #ecfdf5) padding-box,
+    conic-gradient(from var(--boost-angle), #fde68a, #f59e0b 18%, #fff7d6 30%, #fde68a 46%, #d1fae5 60%, #d1fae5 80%, #fde68a) border-box;
+  border-width: 2px;
+  padding: 19.5px;
+  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.14);
+  animation: boost-flow 3.2s linear infinite;
+}
+
+@keyframes boost-flow {
+  to {
+    --boost-angle: 360deg;
+  }
+}
+
+.shop .boost-card::after {
+  content: "";
+  position: absolute;
+  right: -24px;
+  bottom: -24px;
+  width: 128px;
+  height: 128px;
+  border-radius: 50%;
+  background: rgba(34, 197, 94, 0.14);
+  filter: blur(18px);
+}
+
+.shop .boost-card.is-on::after {
+  background: rgba(251, 191, 36, 0.2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shop .boost-card.is-on,
+  .boost-chip.is-on i {
+    animation: none;
+  }
+}
+
+.boost-top,
+.boost-name {
+  display: flex;
+  align-items: center;
+}
+
+.boost-top {
+  position: relative;
+  z-index: 1;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.boost-name {
+  gap: 8px;
+}
+
+.boost-name h2 {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.bolt {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(22, 163, 74, 0.15);
+  position: relative;
+}
+
+.bolt::before {
+  content: "";
+  position: absolute;
+  left: 12px;
+  top: 6px;
+  border-left: 6px solid transparent;
+  border-right: 3px solid transparent;
+  border-bottom: 9px solid #16a34a;
+}
+
+.bolt::after {
+  content: "";
+  position: absolute;
+  left: 8px;
+  top: 13px;
+  border-right: 6px solid transparent;
+  border-left: 3px solid transparent;
+  border-top: 9px solid #16a34a;
+}
+
+.boost-card.is-on .bolt::before {
+  border-bottom-color: #f59e0b;
+}
+
+.boost-card.is-on .bolt::after {
+  border-top-color: #f59e0b;
+}
+
+.shop .boost-card .info-btn {
+  color: #94a3b8;
+}
+
+.shop .boost-flag {
+  position: relative;
+  z-index: 1;
+  padding: 2px 10px;
+  border-radius: 999px;
+  color: #64748b;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  font-size: 11px;
+}
+
+.shop .boost-flag.is-on {
+  color: #b45309;
+  background: #fffbeb;
+  border-color: #fcd34d;
+}
+
+.shop .boost-card p,
+.shop .boost-card small {
+  position: relative;
+  z-index: 1;
+}
+
+.shop .boost-card p {
+  margin-top: 10px;
+  color: #0f172a;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.shop .boost-card p span {
+  color: #16a34a;
+}
+
+.shop .boost-card.is-on p span {
+  color: #d97706;
+}
+
+.shop .boost-card small {
+  color: #64748b;
+}
+
+.task-badge {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #ecfdf5;
+  color: #059669;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.shop .earn {
+  margin: 0;
+  background: transparent;
+  border-radius: 0;
+}
+
+.shop .earn-row {
+  margin-top: 10px;
+  padding: 14px;
+  border: 1px solid #f1f5f9;
+  border-radius: 16px;
+  background: #f8fafc;
+}
+
+.shop .earn-row + .earn-row {
+  border-top: 1px solid #f1f5f9;
+}
+
+.shop .earn-status {
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: #fff;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+.shop .mile-label {
+  margin-top: 14px;
+  padding: 14px 0 0;
+  border-top: 1px solid #f1f5f9;
+}
+
+.shop .mile-note {
+  margin: 4px 0 0;
+}
+
+.shop .miles {
+  margin-top: 8px;
+  padding: 4px 0 0 2px;
+}
+
+.shop .mile-node {
+  box-shadow: 0 0 0 4px #fff;
+}
+
+.shop .link-row {
+  margin: 0;
+  padding: 16px 20px;
+  border-radius: 16px;
+}
+
+.shop .ineligible-title {
+  color: #111315;
 }

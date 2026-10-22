@@ -502,9 +502,9 @@ function skuCard(item) {
   const stockText = sold ? "" : `<small>剩余 ${left}</small>`;
   const stateText = status ? `<span class="sku-state${status === "可兑换" ? " is-ok" : ""}">${status}</span>` : "";
   return `<${tag} class="sku${sold ? " is-out" : ""}"${action}>
-    <span class="ticket" style="background:${item.color};color:${item.ink}"><b>${esc(item.brand)}</b><small>${esc(item.face)}</small></span>
-    <span class="sku-copy"><strong>${esc(item.name)}</strong>${coinPrice(item.coins)}${stockText}</span>
-    ${stateText}
+    <span class="ticket" style="background:${item.color};color:${item.ink}"><b>${esc(item.brand)}</b></span>
+    <span class="sku-copy"><strong>${esc(item.name)}</strong>${stockText}</span>
+    <span class="sku-end">${coinPrice(item.coins)}${stateText}</span>
   </${tag}>`;
 }
 
@@ -518,8 +518,9 @@ function couponCard() {
   const action = disabled ? "" : ' type="button" data-action="open" data-id="coupon"';
   const tag = disabled ? "div" : "button";
   return `<${tag} class="sku${disabled ? " is-out" : ""}"${action}>
-    <span class="ticket" style="background:${COUPON.color};color:${COUPON.ink}"><b>入金券</b><small>5 USD</small></span>
-    <span class="sku-copy"><strong>入金抵扣券</strong>${coinPrice(COUPON.coins)}<small>${esc(note)}</small></span>
+    <span class="ticket" style="background:${COUPON.color};color:${COUPON.ink}"><b>入金券</b></span>
+    <span class="sku-copy"><strong>入金抵扣券</strong><small>${esc(note)}</small></span>
+    <span class="sku-end">${coinPrice(COUPON.coins)}</span>
   </${tag}>`;
 }
 
@@ -560,9 +561,9 @@ function earnLedgerRows() {
 }
 
 function shopNav() {
-  const right = `<button type="button" class="nav-text" data-action="ledger">明细</button>
-    <button type="button" class="nav-text" data-action="rules">规则</button>`;
-  return nav("金币", { back: true, right });
+  const right = `<button type="button" class="nav-pill" data-action="ledger">明细</button>
+    <button type="button" class="nav-pill" data-action="rules">规则</button>`;
+  return `<header class="nav shop-nav"><button type="button" class="icon-btn" data-action="back" aria-label="返回">${ICON_BACK}</button><h1>金币</h1><div class="nav-right">${right}</div></header>`;
 }
 
 function shelfTabs() {
@@ -578,11 +579,15 @@ function boostCard() {
   const sentence = on
     ? "今日平仓获得金币 <span>×1.2</span>"
     : "今日首笔交易平仓后，后续获得的金币 <span>×1.2</span>";
-  return `<div class="head-row boost-title">
-      <h2>今日金币加成<button type="button" class="info-btn" data-action="boost-info" aria-label="有效平仓说明"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M8 7.1V11" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="8" cy="4.7" r=".75" fill="currentColor"/></svg></button></h2>
-      <span class="boost-flag${on ? " is-on" : ""}">${on ? "生效中" : "未开始"}</span>
-    </div>
-    <section class="boost-card">
+  return `<section class="boost-card${on ? " is-on" : ""}">
+      <div class="boost-top">
+        <div class="boost-name">
+          <i class="bolt" aria-hidden="true"></i>
+          <h2>今日金币加成</h2>
+          <button type="button" class="info-btn" data-action="boost-info" aria-label="有效平仓说明"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M8 7.1V11" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="8" cy="4.7" r=".75" fill="currentColor"/></svg></button>
+        </div>
+        <span class="boost-flag${on ? " is-on" : ""}">${on ? "生效中" : "未开始"}</span>
+      </div>
       <p>${sentence}</p>
       <small>生效后，每日 24:00 结束</small>
     </section>`;
@@ -591,17 +596,16 @@ function boostCard() {
 function mileItem({ id, title, done, goal, unit, reward, current }) {
   const reached = done >= goal;
   const amount = lotText(Math.min(done, goal));
-  const node = reached ? "img/node-done.png" : "img/node-wait.png";
   const action = reached
     ? `<span class="mile-done">已完成</span>`
     : `<button type="button" class="mile-go" data-action="bonus-go" data-id="${id}">去完成</button>`;
+  const node = reached
+    ? `<span class="mile-node" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M3.5 8.2 6.4 11 12.5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>`
+    : `<span class="mile-node" aria-hidden="true">$</span>`;
   return `<li class="mile${reached ? " is-done" : ""}${current ? " is-current" : ""}">
-    <span class="mile-node"><img src="${node}" alt=""></span>
-    <div class="mile-main">
-      <div class="mile-top"><b>${title}</b>${action}</div>
-      <p class="mile-frac"><span>${amount} ${unit}</span>/${lotText(goal)} ${unit}</p>
-      <p class="mile-coin"><i class="coin-disc" aria-hidden="true"></i>额外 ${coins(reward)}</p>
-    </div>
+    ${node}
+    <div class="mile-copy"><b>${title}</b><small>${amount} ${unit}/${lotText(goal)} ${unit}</small></div>
+    <div class="mile-side"><span class="mile-coin"><i class="coin-disc" aria-hidden="true"></i>额外 ${coins(reward)}</span>${action}</div>
   </li>`;
 }
 
@@ -643,8 +647,8 @@ function earnBlock() {
         current: !state.firstDeposit,
       })}</ol>`
     : "";
-  return `<section>
-    <div class="head-row"><h2>如何获得金币</h2></div>
+  return `<section class="earn-card">
+    <div class="head-row"><h2>如何获得金币</h2><span class="task-badge">任务奖励</span></div>
     <div class="earn">
       <div class="earn-row"><span><b>有效交易</b><small>${tradeNote}</small></span>${statusMark(tradeStatus)}</div>
       <div class="earn-row"><span><b>入金</b><small>${depositNote}</small></span>${statusMark(depositStatus)}</div>
@@ -772,7 +776,7 @@ function redeemedGoalResult(sku) {
 
 function goalChangeButton() {
   if (!goalOptions().length) return "";
-  return `<button type="button" class="goal-change" data-action="goal">更换</button>`;
+  return `<button type="button" class="goal-change" data-action="goal">更换<svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 5.2h9.2M9.4 2.6l2.8 2.6-2.8 2.6M13.5 10.8H4.3M6.6 8.2 3.8 10.8l2.8 2.6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>`;
 }
 
 function goalCardClass() {
@@ -810,17 +814,17 @@ function paceCard(primary) {
       ${tradeButton}`;
   }
   return `<div class="${goalCardClass()}">
-    <div class="next-prize pace-prize">
+    <div class="reward-head"><span>选定奖励</span>${goalChangeButton()}</div>
+    <div class="reward-row">
       <button type="button" class="next-prize-hit" data-action="open" data-id="${primary.id}">
         <span class="ticket" style="background:${primary.color};color:${primary.ink}"><b>${esc(primary.brand)}</b><small>${esc(primary.face)}</small></span>
         <span class="sku-copy"><strong>${esc(primary.name)}</strong>${coinPrice(primary.coins)}</span>
       </button>
-      ${goalChangeButton()}
-      <div class="pace">
-        <div class="pace-track" aria-hidden="true"><span style="width:${width}%"></span></div>
-        <p class="pace-frac"><b>${coins(Math.min(state.balance, primary.coins))}</b> / ${coins(primary.coins)}</p>
-        ${effort}
-      </div>
+    </div>
+    <div class="pace">
+      <div class="pace-meta"><span>兑换进度</span><b>${coins(Math.min(state.balance, primary.coins))} / ${coins(primary.coins)}</b></div>
+      <div class="pace-track" aria-hidden="true"><span style="width:${width}%"></span></div>
+      ${effort}
     </div>
   </div>`;
 }
@@ -841,11 +845,9 @@ function nextPrize() {
     const copy = nextPrizeCopy(available);
     const fallback = copy.ok ? `可改兑 ${available.name}` : `可改兑 ${available.name}，${copy.text}`;
     return `<div class="${goalCardClass()}">
-      <div class="next-prize is-out">${prizeFace(primary, true)}</div>
-      <div class="goal-sold-row">
-        <button type="button" class="next-fallback" data-action="open" data-id="${available.id}">${esc(fallback)}</button>
-        ${goalChangeButton()}
-      </div>
+      <div class="reward-head"><span>选定奖励</span>${goalChangeButton()}</div>
+      <div class="reward-row is-out">${prizeFace(primary, true)}</div>
+      <button type="button" class="next-fallback" data-action="open" data-id="${available.id}">${esc(fallback)}</button>
     </div>`;
   }
   return paceCard(primary);
@@ -870,7 +872,7 @@ function tickerBlock() {
   const lines = tickerLines();
   if (!lines.length) return "";
   const line = lines[state.tick % lines.length];
-  return `<p class="ticker" aria-live="polite"><span id="ticker-text">${esc(line)}</span></p>`;
+  return `<p class="ticker" aria-live="polite"><i class="ticker-bell" aria-hidden="true"></i><span id="ticker-text">${esc(line)}</span></p>`;
 }
 
 function mineRow() {
@@ -881,26 +883,37 @@ function mineRow() {
 
 function viewShop() {
   const preview = shelf(state.country, state.tab).slice(0, 3).map(skuCard).join("");
+  const on = state.closedToday;
+  const balance = state.eligible
+    ? `<p class="k">我的金币</p>
+      <p class="balance-num">${coins(state.balance)}</p>
+      <p class="rate-line"><i class="live-dot" aria-hidden="true"></i>每交易 0.1 手即可获得金币</p>`
+    : `<p class="k">我的金币</p>
+      <p class="ineligible-title">这个账户不计金币</p>
+      <p class="nearest">美分账户和 Pro 账户的交易不发放金币。换到标准账户后，余额会出现在这里。</p>`;
+  const side = state.eligible
+    ? `<div class="hero-side">
+        <button type="button" class="boost-chip${on ? " is-on" : ""}" data-action="boost-jump"><i></i><span>今日金币加成</span><b>${on ? "生效中" : "未开始"}</b></button>
+        <div class="hero-coin" aria-hidden="true"></div>
+      </div>`
+    : "";
   return `${shopNav()}
-    <main class="screen">
-      <div class="balance-block">
-        ${state.eligible
-          ? `<p class="k">我的金币</p>
-            <p class="balance-num"><i class="coin-disc" aria-hidden="true"></i>${coins(state.balance)}</p>
-            <p class="rate-line">每交易 0.1 手即可获得金币</p>
-            ${nextPrize()}`
-          : `<p class="k">我的金币</p>
-            <p class="ineligible-title">这个账户不计金币</p>
-            <p class="nearest">美分账户和 Pro 账户的交易不发放金币。换到标准账户后，余额会出现在这里。</p>`}
-      </div>
-      <div class="changes">
+    <main class="screen shop">
+      <section class="hero">
+        <div class="hero-glow" aria-hidden="true"></div>
+        <div class="hero-top"><div>${balance}</div>${side}</div>
+        ${state.eligible ? `<div class="reward-nest">${nextPrize()}</div>` : ""}
+      </section>
+      <section class="changes">
         ${changeRow("最近获得", recentEarnText(), "ledger")}
         ${changeRow("最近兑换", recentSpend(), "ledger-redeem")}
-      </div>
+      </section>
       ${tickerBlock()}
-      <div class="head-row"><h2>可兑换</h2><button type="button" data-action="shelf">查看全部</button></div>
-      ${shelfTabs()}
-      ${preview}
+      <section class="shelf-card">
+        <div class="head-row"><h2>可兑换</h2><button type="button" data-action="shelf">查看全部</button></div>
+        ${shelfTabs()}
+        <div class="shelf-list">${preview}</div>
+      </section>
       ${boostCard()}
       ${earnBlock()}
       ${mineRow()}
@@ -1093,32 +1106,36 @@ function viewDepositOk() {
 
 function goalDialog() {
   const nextRound = state.goalPhase === "next";
-  const showAll = state.goalPicker === "all" && state.goalPhase !== "ask" && state.goalPhase !== "later";
-  const options = showAll ? allGoalOptions() : goalOptions();
+  const featured = goalOptions();
+  const all = allGoalOptions();
+  const showAll = state.goalPicker === "all" && all.length > 0;
+  const options = showAll ? all : featured;
   if (!options.length) return "";
-  const rows = options.map((sku) => `<button type="button" class="goal-option${state.goalId === sku.id ? " is-on" : ""}" data-action="goal-pick" data-id="${sku.id}">
+  const currentId = chosenGoal()?.id;
+  const rows = options.map((sku) => {
+    const on = currentId === sku.id;
+    return `<button type="button" role="radio" aria-checked="${on}" class="goal-option${on ? " is-on" : ""}" data-action="goal-pick" data-id="${sku.id}">
       <span class="ticket" style="background:${sku.color};color:${sku.ink}"><b>${esc(sku.brand)}</b><small>${esc(sku.face)}</small></span>
       <span class="sku-copy"><strong>${esc(sku.name)}</strong>${coinPrice(sku.coins)}</span>
-    </button>`).join("");
+      <i class="goal-radio" aria-hidden="true"></i>
+    </button>`;
+  }).join("");
   const title = nextRound ? "选择下一个奖励" : "选一个要兑换的奖励";
-  const note = showAll
-    ? "以下奖励都可以作为目标。"
-    : nextRound
-      ? "继续交易攒金币，目标可以随时更换。"
-      : "每笔交易都会获得金币，攒够即可兑换。奖励可以更换。";
-  const more = (state.goalPhase === "next" || state.goalPhase === "active") && !showAll
-    ? '<button type="button" class="goal-more" data-action="goal-all">查看全部奖励</button>'
-    : "";
-  const back = showAll && goalOptions().length
-    ? '<button type="button" class="goal-more" data-action="goal-featured">只看推荐</button>'
+  const note = nextRound
+    ? "继续交易攒金币，目标可以随时更换。"
+    : "每笔交易都会获得金币，攒够即可兑换。奖励可以更换。";
+  const toggle = all.length > featured.length
+    ? (showAll
+      ? '<button type="button" class="goal-more" data-action="goal-featured">只看推荐</button>'
+      : '<button type="button" class="goal-more" data-action="goal-all">查看全部奖励</button>')
     : "";
   const dismiss = nextRound ? "暂时不选" : (state.goalAsked ? "取消" : "稍后选");
   return `<div class="mask" role="dialog" aria-modal="true">
     <div class="dialog goal-dialog">
       <p class="dialog-title">${title}</p>
       <p class="dialog-note">${note}</p>
-      <div class="goal-list${showAll ? " is-all" : ""}">${rows}</div>
-      ${more}${back}
+      <div class="goal-list${showAll ? " is-all" : ""}" role="radiogroup" aria-label="兑换目标">${rows}</div>
+      ${toggle}
       <button type="button" class="text-btn" data-action="goal-dismiss">${dismiss}</button>
     </div>
   </div>`;
@@ -1300,6 +1317,14 @@ function payDeposit() {
   render();
 }
 
+function jumpToBoost() {
+  const screen = document.querySelector(".screen");
+  const card = document.querySelector(".boost-card");
+  if (!screen || !card) return;
+  const top = card.getBoundingClientRect().top - screen.getBoundingClientRect().top + screen.scrollTop - 8;
+  screen.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+}
+
 function back() {
   const from = state.screen;
   state.dialog = null;
@@ -1382,7 +1407,8 @@ function onAction(action, el) {
   else if (action === "boost-info") {
     state.dialog = "boost";
     render();
-  } else if (action === "boost") enableBoost();
+  } else if (action === "boost-jump") jumpToBoost();
+  else if (action === "boost") enableBoost();
   else if (action === "close") closeLot();
   else if (action === "ask") askRedeem();
   else if (action === "cancel") {
